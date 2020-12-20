@@ -41,7 +41,7 @@ export class LambdaConstruct extends Construct {
          * Create AWS Lambda function and push image to ECR
          */
         const hanlder = new DockerImageFunction(this, `${prefix}-${stage}-Handler`, {
-            functionName: `${prefix}-${stage}-Handler`,
+            functionName: `${prefix}-${stage}-Counter-Handler`,
             memorySize: 256,
             code: DockerImageCode.fromImageAsset(dockerfile),
         });

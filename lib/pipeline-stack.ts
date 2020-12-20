@@ -66,7 +66,7 @@ export class PipelineStack extends Stack {
          * The basic pipeline declaration. This sets the initial structure of our pipeline
          */
         const pipeline = new CdkPipeline(this, `${prefix}-${stage}-pipeline`, {
-            pipelineName: 'WorkshopPipeline',
+            pipelineName: `${prefix}-${stage}-pipeline`,
             cloudAssemblyArtifact,
 
             /**
@@ -97,7 +97,7 @@ export class PipelineStack extends Stack {
             })
         });
 
-        const deploy = new PipelineStage(this, 'Deploy', { prefix, stage });
+        const deploy = new PipelineStage(this, `App-Deploy-Stage`, { prefix, stage });
         const deployStage = pipeline.addApplicationStage(deploy);
 
         // deployStage.addActions(new ShellScriptAction({

@@ -1,10 +1,10 @@
 import { Stack, Construct, StackProps, CfnOutput } from '@aws-cdk/core';
 import { DockerImageFunction, DockerImageCode, Runtime, Code } from '@aws-cdk/aws-lambda';
-import { LambdaRestApi } from '@aws-cdk/aws-apigateway';
+// import { LambdaRestApi } from '@aws-cdk/aws-apigateway';
 import * as path from 'path';
 
-import { LambdaConstruct } from './lambda-construct';
-import { TableViewer } from 'cdk-dynamo-table-viewer';
+// import { LambdaConstruct } from './lambda-construct';
+// import { TableViewer } from 'cdk-dynamo-table-viewer';
 
 interface LambdaStackProps extends StackProps {
     readonly prefix: string;
@@ -39,16 +39,16 @@ export class LambdaStack extends Stack {
          * Create AWS Lambda function and push image to ECR
          */
         const hello = new DockerImageFunction(this, `Hello-Handler`, {
-            functionName: `${prefix}-${stage}-Handler`,
+            functionName: `${prefix}-${stage}-Hello-Handler`,
             memorySize: 256,
             code: DockerImageCode.fromImageAsset(dockerfile),
         });
 
-        const helloWithCounter = new LambdaConstruct(this, 'Hit-Counter', {
-            prefix,
-            stage,
-            downstream: hello
-        });
+        // const helloWithCounter = new LambdaConstruct(this, 'Hit-Counter', {
+        //     prefix,
+        //     stage,
+        //     downstream: hello
+        // });
 
         // defines an API Gateway REST API resource backed by our "hello" function.
         // const gateway = new LambdaRestApi(this, 'Endpoint', {
