@@ -1,0 +1,10 @@
+{
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/PREFIX:region=us-east-1": "CDKPipeline-Lambda",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/STAGE:region=us-east-1": "Dev",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/CDK_ACCOUNT:region=us-east-1": "201499839889",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/CDK_REGION:region=us-east-1": "us-east-1",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/GITHUB_REPO:region=us-east-1": "aws-cdk-cdkpipeline-lambda-version",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/GITHUB_OWNER:region=us-east-1": "Lcmkey",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/GITHUB_BRANCH:region=us-east-1": "master",
+  "ssm:account=201499839889:parameterName=/CDKPipeline-Lambda/Dev/GITHUB_TOEKN_KEY:region=us-east-1": "GITHUB_OAUTH_TOKEN"
+}

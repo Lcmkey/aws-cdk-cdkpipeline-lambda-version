@@ -1,0 +1,39 @@
+{
+  "name": "aws-cdk-cdkpipeline-lambda-version",
+  "version": "0.1.0",
+  "bin": {
+    "aws-cdk-cdkpipeline-lambda-version": "bin/aws-cdk-cdkpipeline-lambda-version.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.79.0",
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0",
+    "aws-cdk": "1.79.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "1.79.0",
+    "@aws-cdk/aws-apigateway": "^1.79.0",
+    "@aws-cdk/aws-codecommit": "^1.79.0",
+    "@aws-cdk/aws-codepipeline-actions": "^1.79.0",
+    "@aws-cdk/aws-dynamodb": "^1.79.0",
+    "@aws-cdk/aws-lambda": "^1.79.0",
+    "@aws-cdk/aws-sns": "^1.79.0",
+    "@aws-cdk/aws-sqs": "^1.79.0",
+    "@aws-cdk/core": "^1.79.0",
+    "@aws-cdk/cx-api": "^1.79.0",
+    "@aws-cdk/pipelines": "^1.79.0",
+    "cdk-dynamo-table-viewer": "^3.1.2",
+    "dotenv": "^8.2.0",
+    "source-map-support": "^0.5.16"
+  }
+}
