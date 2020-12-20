@@ -25,7 +25,7 @@ export class LambdaStack extends Stack {
         const { prefix, stage } = props;
 
         shell.exec("cd ./src/lambda/hello && npm run build");
-        shell.exec("cd ./src/lambda/hitCounter && npm run build");
+        // shell.exec("cd ./src/lambda/hitCounter && npm run build");
 
         /**
          * Configure path to Dockerfile
