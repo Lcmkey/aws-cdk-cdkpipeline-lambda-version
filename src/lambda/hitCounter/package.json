@@ -1,20 +1,20 @@
 {
-    "name": "hit-counter",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "start": "node dist/app.js",
-      "dev": "nodemon src/app.ts",
-      "build": "tsc -p ."
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-      "faker": "^5.1.0"
-    },
-    "devDependencies": {
-      "@types/faker": "^5.1.5"
-    }
+  "name": "hit-counter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
+    "build": "tsc -p ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "faker": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/faker": "^5.1.5"
   }
+}

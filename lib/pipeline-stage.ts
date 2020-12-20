@@ -8,8 +8,8 @@ interface PipelineStageProps extends StageProps {
 }
 
 export class PipelineStage extends Stage {
-    // public readonly hcViewerUrl: CfnOutput;
-    // public readonly hcEndpoint: CfnOutput;
+    public readonly hcViewerUrl: CfnOutput;
+    public readonly hcEndpoint: CfnOutput;
 
     constructor(scope: Construct, id: string, props: PipelineStageProps) {
         super(scope, id, props);
@@ -21,7 +21,7 @@ export class PipelineStage extends Stage {
 
         const service = new LambdaStack(this, 'WebService', { prefix, stage });
 
-        // this.hcEndpoint = service.hcEndpoint;
-        // this.hcViewerUrl = service.hcViewerUrl;
+        this.hcEndpoint = service.hcEndpoint;
+        this.hcViewerUrl = service.hcViewerUrl;
     }
 }
