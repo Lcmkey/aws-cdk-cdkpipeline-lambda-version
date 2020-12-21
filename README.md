@@ -70,6 +70,36 @@ The following diagram illustrates the stages of a CDK pipeline.
 
 > ***After the Stack has been deployed, the pipeline `Assets` Stage will be `fail` when the first time to deploy, then you need to manually create a `ECR` Registry. Realease change the pipeline after you manually create a `ECR` Registry.
 
+---
+
+The Script is base on the aws cli to create
+
+example:
+
+```properties
+$ aws ssm put-parameter \
+    --name /serverless-pipeline/sns/notifications/primary-email \
+    --description "Email address for primary recipient of Pipeline notifications" \
+    --type String \
+    --value PRIMARY_EMAIL_ADDRESS
+
+$ aws ssm put-parameter \
+    --name /serverless-pipeline/codepipeline/github/repo \
+    --description "Github Repository name for CloudFormation Stack serverless-pipeline" \
+    --type String \
+    --value GITHUB_REPO_NAME
+
+$ aws ssm put-parameter \
+    --name /serverless-pipeline/codepipeline/github/user \
+    --description "Github Username for CloudFormation Stack serverless-pipeline" \
+    --type String \
+    --value GITHUB_USER
+
+$ aws secretsmanager create-secret \
+    --name /serverless-pipeline/secrets/github/token \
+    --secret-string '{"github-token":"YOUR_TOKEN"}'
+```
+
 <!-- Reference -->
 
 [aws CDK Pipelines]: https://aws.amazon.com/blogs/developer/cdk-pipelines-continuous-delivery-for-aws-cdk-applications/
