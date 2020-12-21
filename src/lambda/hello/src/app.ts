@@ -1,6 +1,8 @@
-type lambdaHandlerFuncType = (event: any, context: any) => Promise<any>;
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 
-export const handler: lambdaHandlerFuncType = async (event: any, context: any) => {
+type lambdaHandlerFuncType = (event: APIGatewayProxyEvent, context: Context) => Promise<APIGatewayProxyResult>;
+
+export const handler: lambdaHandlerFuncType = async (event, context) => {
     console.log('request:', JSON.stringify(event, undefined, 2));
 
     return {

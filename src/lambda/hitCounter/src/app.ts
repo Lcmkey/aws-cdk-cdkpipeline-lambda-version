@@ -1,8 +1,9 @@
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 const { DynamoDB, Lambda } = require('aws-sdk');
 
-type lambdaHandlerFuncType = (event: any, context: any) => Promise<any>;
+type lambdaHandlerFuncType = (event: APIGatewayProxyEvent, context: Context) => Promise<APIGatewayProxyResult>;
 
-export const handler: lambdaHandlerFuncType = async (event: any, context: any) => {
+export const handler: lambdaHandlerFuncType = async (event, context) => {
     console.log("request:", JSON.stringify(event, undefined, 2));
 
     // create AWS SDK clients
