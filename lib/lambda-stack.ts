@@ -1,11 +1,11 @@
 import { Stack, Construct, StackProps, CfnOutput } from '@aws-cdk/core';
 import { DockerImageFunction, DockerImageCode, Runtime, Code } from '@aws-cdk/aws-lambda';
-// import { LambdaRestApi } from '@aws-cdk/aws-apigateway';
+import { LambdaRestApi } from '@aws-cdk/aws-apigateway';
 import * as path from 'path';
 import * as shell from "shelljs";
 
-// import { LambdaConstruct } from './lambda-construct';
-// import { TableViewer } from 'cdk-dynamo-table-viewer';
+import { LambdaConstruct } from './lambda-construct';
+import { TableViewer } from 'cdk-dynamo-table-viewer';
 
 interface LambdaStackProps extends StackProps {
     readonly prefix: string;
@@ -25,7 +25,7 @@ export class LambdaStack extends Stack {
         const { prefix, stage } = props;
 
         shell.exec("cd ./src/lambda/hello && npm run build");
-        // shell.exec("cd ./src/lambda/hitCounter && npm run build");
+        shell.exec("cd ./src/lambda/hitCounter && npm run build");
 
         /**
          * Configure path to Dockerfile
@@ -48,30 +48,30 @@ export class LambdaStack extends Stack {
             code: DockerImageCode.fromImageAsset(dockerfile),
         });
 
-        // const helloWithCounter = new LambdaConstruct(this, 'Hit-Counter', {
-        //     prefix,
-        //     stage,
-        //     downstream: hello
-        // });
+        const helloWithCounter = new LambdaConstruct(this, 'Hit-Counter', {
+            prefix,
+            stage,
+            downstream: hello
+        });
 
         // defines an API Gateway REST API resource backed by our "hello" function.
-        // const gateway = new LambdaRestApi(this, 'Endpoint', {
-        //     handler: helloWithCounter.handler
-        // });
+        const gateway = new LambdaRestApi(this, 'Endpoint', {
+            handler: helloWithCounter.handler
+        });
 
-        // const tv = new TableViewer(this, 'ViewHitCounter', {
-        //     title: 'Hello Hits',
-        //     table: helloWithCounter.table,
-        //     sortBy: '-hits'
-        // });
+        const tv = new TableViewer(this, 'ViewHitCounter', {
+            title: 'Hello Hits',
+            table: helloWithCounter.table,
+            sortBy: '-hits'
+        });
 
-        // this.hcEndpoint = new CfnOutput(this, 'GatewayUrl', {
-        //     value: gateway.url
-        // });
+        this.hcEndpoint = new CfnOutput(this, 'GatewayUrl', {
+            value: gateway.url
+        });
 
-        // this.hcViewerUrl = new CfnOutput(this, 'TableViewerUrl', {
-        //     value: tv.endpoint
-        // });
+        this.hcViewerUrl = new CfnOutput(this, 'TableViewerUrl', {
+            value: tv.endpoint
+        });
     }
 }
 

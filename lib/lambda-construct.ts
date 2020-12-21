@@ -1,5 +1,5 @@
 import { Construct } from '@aws-cdk/core';
-import { IFunction, DockerImageFunction, DockerImageCode, Runtime, Code } from '@aws-cdk/aws-lambda';
+import { IFunction, Function, DockerImageFunction, DockerImageCode, Runtime, Code } from '@aws-cdk/aws-lambda';
 import { Table, AttributeType } from '@aws-cdk/aws-dynamodb';
 import * as path from "path";
 
@@ -30,7 +30,6 @@ export class LambdaConstruct extends Construct {
             partitionKey: { name: 'path', type: AttributeType.STRING }
         });
 
-
         /**
          * Configure path to Dockerfile
          */
@@ -40,12 +39,16 @@ export class LambdaConstruct extends Construct {
          * Signle Lambda
          * Create AWS Lambda function and push image to ECR
          */
-        const hanlder = new DockerImageFunction(this, `${prefix}-${stage}-Handler`, {
+        const hanlder = new DockerImageFunction(this, `${prefix}-${stage}-Counter-Handler`, {
             functionName: `${prefix}-${stage}-Counter-Handler`,
             memorySize: 256,
             code: DockerImageCode.fromImageAsset(dockerfile),
+            environment: {
+                DOWNSTREAM_FUNCTION_NAME: props.downstream.functionName,
+                HITS_TABLE_NAME: table.tableName
+            }
         });
-
+        // const counterHandler = Function.fromFunctionArn(this, "Existing-Counter-Lambda", hanlder.functionArn);
 
         // this.handler = new Function(this, 'HitCounterHandler', {
         //     runtime: Runtime.NODEJS_10_X,
@@ -58,12 +61,12 @@ export class LambdaConstruct extends Construct {
         // });
 
         this.table = table;
-        // this.handler = hanlder;
+        this.handler = hanlder;
 
         // grant the lambda role read/write permissions to our table
-        // table.grantReadWriteData(this.handler);
+        table.grantReadWriteData(this.handler);
 
         // grant the lambda role invoke permissions to the downstream function
-        // props.downstream.grantInvoke(this.handler);
+        props.downstream.grantInvoke(this.handler);
     }
 }

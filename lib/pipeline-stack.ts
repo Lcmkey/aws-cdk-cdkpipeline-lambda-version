@@ -98,28 +98,29 @@ export class PipelineStack extends Stack {
         });
 
         const deploy = new PipelineStage(this, `App-Deploy-Stage`, { prefix, stage });
+
         const deployStage = pipeline.addApplicationStage(deploy);
 
-        // deployStage.addActions(new ShellScriptAction({
-        //     actionName: 'TestViewerEndpoint',
-        //     useOutputs: {
-        //         ENDPOINT_URL: pipeline.stackOutput(deploy.hcViewerUrl)
-        //     },
-        //     commands: [
-        //         'curl -Ssf $ENDPOINT_URL'
-        //     ]
-        // }));
+        deployStage.addActions(new ShellScriptAction({
+            actionName: 'TestViewerEndpoint',
+            useOutputs: {
+                ENDPOINT_URL: pipeline.stackOutput(deploy.hcViewerUrl)
+            },
+            commands: [
+                'curl -Ssf $ENDPOINT_URL'
+            ]
+        }));
 
-        // deployStage.addActions(new ShellScriptAction({
-        //     actionName: 'TestAPIGatewayEndpoint',
-        //     useOutputs: {
-        //         ENDPOINT_URL: pipeline.stackOutput(deploy.hcEndpoint)
-        //     },
-        //     commands: [
-        //         'curl -Ssf $ENDPOINT_URL/',
-        //         'curl -Ssf $ENDPOINT_URL/hello',
-        //         'curl -Ssf $ENDPOINT_URL/test'
-        //     ]
-        // }));
+        deployStage.addActions(new ShellScriptAction({
+            actionName: 'TestAPIGatewayEndpoint',
+            useOutputs: {
+                ENDPOINT_URL: pipeline.stackOutput(deploy.hcEndpoint)
+            },
+            commands: [
+                'curl -Ssf $ENDPOINT_URL/',
+                'curl -Ssf $ENDPOINT_URL/hello',
+                'curl -Ssf $ENDPOINT_URL/test'
+            ]
+        }));
     }
 }
