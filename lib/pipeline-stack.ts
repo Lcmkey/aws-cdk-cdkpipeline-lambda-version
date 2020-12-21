@@ -98,7 +98,7 @@ export class PipelineStack extends Stack {
         });
 
         /**
-         * Add Pipeline Accplication Stage
+         * Add Pipeline Appication Stages
          */
         const deploy = new PipelineStage(this, `App-Deploy-Stage`, { prefix, stage });
         const deployStage = pipeline.addApplicationStage(deploy);
@@ -109,9 +109,16 @@ export class PipelineStack extends Stack {
         deployStage.addActions(new ShellScriptAction({
             actionName: 'TestViewerEndpoint',
             useOutputs: {
+                /**
+                 * Get the stack Output from the Stage and make it available in
+                 * the shell script as $ENDPOINT_URL.
+                 */
                 ENDPOINT_URL: pipeline.stackOutput(deploy.hcViewerUrl)
             },
             commands: [
+                /**
+                 * Use 'curl' to GET the given URL and fail if it returns an error
+                 */
                 'curl -Ssf $ENDPOINT_URL'
             ]
         }));
@@ -119,9 +126,16 @@ export class PipelineStack extends Stack {
         deployStage.addActions(new ShellScriptAction({
             actionName: 'TestAPIGatewayEndpoint',
             useOutputs: {
+                /**
+                 * Get the stack Output from the Stage and make it available in
+                 * the shell script as $ENDPOINT_URL.
+                 */
                 ENDPOINT_URL: pipeline.stackOutput(deploy.hcEndpoint)
             },
             commands: [
+                /**
+                 * Use 'curl' to GET the given URL and fail if it returns an error
+                 */
                 'curl -Ssf $ENDPOINT_URL/',
                 'curl -Ssf $ENDPOINT_URL/hello',
                 'curl -Ssf $ENDPOINT_URL/test'
