@@ -17,7 +17,13 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  
  &thinsp;
 
-# [CDK Pipelines][aws CDK Pipelines]: Continuous delivery for AWS CDK applications
+# CDK Pipelines: Continuous delivery for AWS CDK applications
+
+# Reference
+
+1. [CDK Pipelines: Continuous delivery for AWS CDK applications][aws CDK Pipelines]
+
+2. [CBuilding a CI/CD Pipeline for Serverless Applications on AWS with AWS CDK][CI/CD Pipeline for Serverless Applications]
 
 The following diagram illustrates the stages of a CDK pipeline.
 
@@ -103,3 +109,4 @@ $ aws secretsmanager create-secret \
 <!-- Reference -->
 
 [aws CDK Pipelines]: https://aws.amazon.com/blogs/developer/cdk-pipelines-continuous-delivery-for-aws-cdk-applications/
+[CI/CD Pipeline for Serverless Applications]: https://www.1strategy.com/blog/2019/10/09/building-a-ci-cd-pipeline-for-serverless-applications-on-aws-with-aws-cdk/
