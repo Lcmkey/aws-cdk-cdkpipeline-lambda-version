@@ -2,6 +2,7 @@ type lambdaHandlerFuncType = (event: any, context: any) => Promise<any>;
 
 export const handler: lambdaHandlerFuncType = async (event: any, context: any) => {
     console.log('request:', JSON.stringify(event, undefined, 2));
+    console.log("pring test");
 
     return {
         statusCode: 200,
