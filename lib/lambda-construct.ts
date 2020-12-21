@@ -1,8 +1,7 @@
 import { Construct } from "@aws-cdk/core";
-import { IFunction, Function, DockerImageFunction, DockerImageCode, Runtime, Code } from "@aws-cdk/aws-lambda";
+import { IFunction, Function, DockerImageFunction, DockerImageCode } from "@aws-cdk/aws-lambda";
 import { Table, AttributeType } from "@aws-cdk/aws-dynamodb";
 import * as path from "path";
-
 
 export interface LambdaConstructProps {
     prefix: string;
