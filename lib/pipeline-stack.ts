@@ -36,10 +36,10 @@ export class PipelineStack extends Stack {
         const cloudAssemblyArtifact = new Artifact();
 
         /**
-         * This creates a new CodeCommit repository called 'WorkshopRepo'
+         * This creates a new CodeCommit repository
          */
-        // const repo = new Repository(this, 'WorkshopRepo', {
-        //     repositoryName: "WorkshopRepo"
+        // const repo = new Repository(this, `${prefix}-${stage}-Repo`, {
+        //     repositoryName: `${prefix}-${stage}-Repo`
         // });
 
         // const sourceAction = new CodeCommitSourceAction({
@@ -97,10 +97,15 @@ export class PipelineStack extends Stack {
             })
         });
 
+        /**
+         * Add Pipeline Accplication Stage
+         */
         const deploy = new PipelineStage(this, `App-Deploy-Stage`, { prefix, stage });
-
         const deployStage = pipeline.addApplicationStage(deploy);
 
+        /**
+         * Stage Add Actions to test the service
+         */
         deployStage.addActions(new ShellScriptAction({
             actionName: 'TestViewerEndpoint',
             useOutputs: {

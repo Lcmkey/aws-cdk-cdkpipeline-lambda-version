@@ -19,7 +19,7 @@ export class PipelineStage extends Stage {
          */
         const { prefix, stage } = props;
 
-        const service = new LambdaStack(this, 'WebService', { prefix, stage });
+        const service = new LambdaStack(this, 'Lambda-Service', { prefix, stage });
 
         this.hcEndpoint = service.hcEndpoint;
         this.hcViewerUrl = service.hcViewerUrl;

@@ -1,11 +1,11 @@
-import { Stack, Construct, StackProps, CfnOutput } from '@aws-cdk/core';
-import { DockerImageFunction, DockerImageCode, Runtime, Code } from '@aws-cdk/aws-lambda';
+import { Stack, Construct, StackProps, CfnOutput, Duration } from '@aws-cdk/core';
+import { DockerImageFunction, DockerImageCode } from '@aws-cdk/aws-lambda';
 import { LambdaRestApi } from '@aws-cdk/aws-apigateway';
+import { TableViewer } from 'cdk-dynamo-table-viewer';
 import * as path from 'path';
 import * as shell from "shelljs";
 
 import { LambdaConstruct } from './lambda-construct';
-import { TableViewer } from 'cdk-dynamo-table-viewer';
 
 interface LambdaStackProps extends StackProps {
     readonly prefix: string;
@@ -24,6 +24,9 @@ export class LambdaStack extends Stack {
          */
         const { prefix, stage } = props;
 
+        /**
+         * Budil souce code from ts to js
+         */
         shell.exec("cd ./src/lambda/hello && npm run build");
         shell.exec("cd ./src/lambda/hitCounter && npm run build");
 
@@ -31,6 +34,7 @@ export class LambdaStack extends Stack {
          * Configure path to Dockerfile
          */
         const dockerfile = path.join(__dirname, "./../src/lambda/hello");
+
 
         // const hello = new Function(this, 'HelloHandler', {
         //     runtime: Runtime.NODEJS_10_X,
@@ -46,6 +50,7 @@ export class LambdaStack extends Stack {
             functionName: `${prefix}-${stage}-Hello-Handler`,
             memorySize: 256,
             code: DockerImageCode.fromImageAsset(dockerfile),
+            timeout: Duration.seconds(30),
         });
 
         const helloWithCounter = new LambdaConstruct(this, 'Hit-Counter', {
@@ -54,12 +59,14 @@ export class LambdaStack extends Stack {
             downstream: hello
         });
 
-        // defines an API Gateway REST API resource backed by our "hello" function.
-        const gateway = new LambdaRestApi(this, 'Endpoint', {
+        /**
+         * defines an API Gateway REST API resource backed by our "hello" function.
+         */
+        const gateway = new LambdaRestApi(this, `${prefix}-${stage}-Endpoint`, {
             handler: helloWithCounter.handler
         });
 
-        const tv = new TableViewer(this, 'ViewHitCounter', {
+        const tv = new TableViewer(this, `${prefix}-${stage}-ViewHitCounter`, {
             title: 'Hello Hits',
             table: helloWithCounter.table,
             sortBy: '-hits'
@@ -74,70 +81,3 @@ export class LambdaStack extends Stack {
         });
     }
 }
-
-// import { App, Stack, StackProps, CfnOutput } from "@aws-cdk/core";
-// import { DockerImageFunction, DockerImageCode, Function } from "@aws-cdk/aws-lambda";
-// import * as path from "path";
-// import * as fs from 'fs'
-// import * as camelcase from 'camelcase';
-
-
-
-// interface LambdaStackStackProps extends StackProps {
-//     readonly prefix: string;
-//     readonly stage: string;
-// }
-
-// export class LambdaStack extends Stack {
-//     public functionList: { [key: string]: Function } = {}
-
-//     constructor(scope: App, id: string, props: LambdaStackStackProps) {
-//         super(scope, id, props);
-
-//         /**
-//          * Get var from props
-//          */
-//         const { prefix, stage } = props;
-
-//         /**
-//          * Configure path to Dockerfile
-//          */
-//         // const dockerfile = path.join(__dirname, "./../src/lambda");
-
-//         /**
-//          * Signle Lambda
-//          * Create AWS Lambda function and push image to ECR
-//          */
-//         // new DockerImageFunction(this, `${prefix}-${stage}-Handler`, {
-//         //   functionName: `${prefix}-${stage}-Handler`,
-//         //   memorySize: 256,
-//         //   code: DockerImageCode.fromImageAsset(dockerfile),
-//         // });
-
-//         /**
-//          * Define Lmabda handler sroure code path
-//          */
-//         const handlersPath = path.join(__dirname, "./../src/lambda");
-//         const nodes = fs.readdirSync(handlersPath);
-
-//         shell.exec("cd ./src/lambda/hello && npm run build");
-//         shell.exec("cd ./src/lambda/hitCounter && npm run build");
-
-//         /**
-//          * Create Mutiple Lambda
-//          */
-//         nodes.filter((node) => fs.statSync(`${handlersPath}/${node}`).isDirectory()).map((name) => {
-//             const id = camelcase(name, { pascalCase: true });
-
-//             this.functionList[id] = new DockerImageFunction(this, `${prefix}-${stage}-Handler-${id}`, {
-//                 functionName: `${prefix}-${stage}-Handler-${id}`,
-//                 memorySize: 256,
-//                 code: DockerImageCode.fromImageAsset(`${handlersPath}/${name}`),
-//             });
-
-//             new CfnOutput(this, `$${prefix}-${stage}-Handler-${id}-Arn`, {
-//                 value: this.functionList[id].functionArn
-//             })
-//         });
-//     }
-// }

@@ -1,6 +1,6 @@
-import { Construct } from '@aws-cdk/core';
-import { IFunction, Function, DockerImageFunction, DockerImageCode, Runtime, Code } from '@aws-cdk/aws-lambda';
-import { Table, AttributeType } from '@aws-cdk/aws-dynamodb';
+import { Construct } from "@aws-cdk/core";
+import { IFunction, Function, DockerImageFunction, DockerImageCode, Runtime, Code } from "@aws-cdk/aws-lambda";
+import { Table, AttributeType } from "@aws-cdk/aws-dynamodb";
 import * as path from "path";
 
 
@@ -26,8 +26,12 @@ export class LambdaConstruct extends Construct {
          */
         const { prefix, stage } = props;
 
-        const table = new Table(this, 'Hits', {
-            partitionKey: { name: 'path', type: AttributeType.STRING }
+        /**
+         * Create DynamoDB
+         */
+        const table = new Table(this, "Hits", {
+            tableName: `${prefix}-${stage}-Hits`,
+            partitionKey: { name: "path", type: AttributeType.STRING }
         });
 
         /**
@@ -50,9 +54,9 @@ export class LambdaConstruct extends Construct {
         });
         // const counterHandler = Function.fromFunctionArn(this, "Existing-Counter-Lambda", hanlder.functionArn);
 
-        // this.handler = new Function(this, 'HitCounterHandler', {
+        // this.handler = new Function(this, "HitCounterHandler", {
         //     runtime: Runtime.NODEJS_10_X,
-        //     handler: 'hitcounter.handler',
+        //     handler: "hitcounter.handler",
         //     code: Code.fromAsset(path.join(__dirname, "./../src/lambda")),
         //     environment: {
         //         DOWNSTREAM_FUNCTION_NAME: props.downstream.functionName,
@@ -63,10 +67,14 @@ export class LambdaConstruct extends Construct {
         this.table = table;
         this.handler = hanlder;
 
-        // grant the lambda role read/write permissions to our table
+        /**
+         * grant the lambda role read/write permissions to our table
+         */
         table.grantReadWriteData(this.handler);
 
-        // grant the lambda role invoke permissions to the downstream function
+        /**
+         * grant the lambda role invoke permissions to the downstream function
+         */
         props.downstream.grantInvoke(this.handler);
     }
 }
